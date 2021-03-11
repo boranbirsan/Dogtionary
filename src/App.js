@@ -37,6 +37,9 @@ class App extends React.Component {
 
         reader.onloadend = () => {
             this.setState({
+                images: [],
+                classification: null,
+                selectedReaction: null,
                 selectedFile: file,
                 imagePreviewUrl: reader.result,
                 error: null,
@@ -117,7 +120,7 @@ class App extends React.Component {
                 }
             } else {
                 this.setState({
-                    error: 'Could not accurately classify a breed',
+                    error: 'Accuracy of predictions are too low, please try a different image',
                     loading: false,
                 });
             }
@@ -134,7 +137,7 @@ class App extends React.Component {
             <Navbar>
                 <div style={{textAlign: 'center'}}>
                     <h1>Dogtionary</h1>
-                    <p>Upload a picture of a dog and our system will classify the breed of the dog. providing your with
+                    <p>Upload a picture of a dog and our system will classify the breed of the dog, providing you with
                         more pictures of dogs of the same breed. Please enjoy.
                     </p>
                     <strong style={{display: 'block', paddingBottom: '15px'}}>CATS BEWARE</strong>
@@ -165,7 +168,7 @@ class App extends React.Component {
                         return (
                             <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
                                 <div>
-                                    <img style={{width: '100%'}} src={value} alt={''}/>
+                                    <img loading='lazy' style={{width: '100%'}} src={value} alt={''}/>
                                 </div>
                             </Grid>
                         );
