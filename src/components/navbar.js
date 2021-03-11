@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import dogLogo from '../assets/dog-api-logo.svg';
 
-import {Drawer, Grid} from '@material-ui/core'
+import {Drawer} from '@material-ui/core'
 
 const drawerWidth = 300;
 
@@ -27,15 +27,16 @@ const useStyles = makeStyles(theme => ({
             textAlign: 'left',
             background: '#E5EEFD',
     },
-    panelTitle: {
-        textAlign: 'center',
-    },
-    panelPadding: {
-        padding: '20px',
-    },
     content: {
         flexGrow: 1,
         padding: theme.spacing(3),
+    },
+    link:{
+        outline: 'none',
+        textDecoration: 'none',
+        color: 'black',
+        paddingBottom: '10px',
+        display: 'block'
     }
 }));
 
@@ -50,13 +51,19 @@ function Navbar ( {children} ) {
                 classes={{paper: classes.drawerBackground}}
                 open
             >
-                <h1 className={classes.panelTitle}>Resources</h1>
-                <div className={classes.panelPadding}>
-                    <img src={dogLogo}/>
-                    <h2>DOG CEO</h2>
-                    <p>Website</p>
-                    <p>Dog.API</p>
-                    <p>Github</p>
+                <h1 style={{textAlign: 'center'}}>Resources</h1>
+                <div style={{padding: '20px'}}>
+                    <img src={dogLogo} alt={''}/>
+                    <h2 style={{paddingLeft: '15px'}}>DOG CEO</h2>
+                    <a className={classes.link} href='https://dog.ceo'>Website</a>
+                    <a className={classes.link} href='https://dog.ceo/dog-api/'>Dog.API</a>
+                    <a className={classes.link} href='https://github.com/ElliottLandsborough/dog-ceo-api'>Github</a>
+                    <br/>
+                    <hr/>
+                    <h2 style={{paddingLeft: '15px'}}>Classification</h2>
+                    <h4>@tensorflow-models/mobilenet</h4>
+                    <a className={classes.link} href='https://www.npmjs.com/package/@tensorflow-models/mobilenet'>npm</a>
+                    <a className={classes.link} href='https://github.com/tensorflow/tfjs-models/tree/master/mobilenet'>Github</a>
                 </div>
             </Drawer>
             <main className={classes.content}>
