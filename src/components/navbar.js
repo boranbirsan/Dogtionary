@@ -1,4 +1,5 @@
 import React from 'react';
+import { useMediaQuery } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 
 import dogLogo from '../assets/dog-api-logo.svg';
@@ -51,10 +52,11 @@ const useStyles = makeStyles(theme => ({
 
 function Navbar ( {children} ) {
     const classes = useStyles();
+    const isMobile = useMediaQuery('(max-width: 750px');
 
     return (
         <div className={classes.root}>
-            <Drawer
+            {!isMobile && <Drawer
                 variant="permanent"
                 className={classes.drawer}
                 classes={{paper: classes.drawerBackground}}
@@ -103,7 +105,7 @@ function Navbar ( {children} ) {
                         </a>
                     </List>
                 </div>
-            </Drawer>
+            </Drawer>}
             <main className={classes.content}>
                 {children}
             </main>

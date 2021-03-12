@@ -1,6 +1,9 @@
 .root {
     text-align: center;
     padding-top: 50px;
+    overflow: hidden;
+    position: relative;
+    width: 100vw;
 }
 
 .Title {
