@@ -2,7 +2,10 @@ import './App.css';
 
 import React from 'react';
 
-import {Grid, Backdrop, CircularProgress} from '@material-ui/core';
+import {Modal, CircularProgress} from '@material-ui/core';
+import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
+
+import Title from './assets/Dogtionary.png'
 
 import Navbar from './components/navbar';
 const mobilenet = require('@tensorflow-models/mobilenet');
@@ -135,9 +138,9 @@ class App extends React.Component {
     render(){
         return (
             <Navbar>
-                <div style={{textAlign: 'center'}}>
-                    <h1>Dogtionary</h1>
-                    <p>Upload a picture of a dog and our system will classify the breed of the dog, providing you with
+                <div style={{textAlign: 'center', paddingTop: '50px'}}>
+                    <img style={{width: '500px'}} src={Title} alt={''}/>
+                    <p style={{fontFamily: 'book antiqua'}}>Upload a picture of a dog and our system will classify the breed of the dog, providing you with
                         more pictures of dogs of the same breed. Please enjoy.
                     </p>
                     <strong style={{display: 'block', paddingBottom: '15px'}}>CATS BEWARE</strong>
@@ -157,26 +160,22 @@ class App extends React.Component {
                 {this.state.classification && <h3 style={{display: 'block', padding: '15px', textAlign: 'center'}}>
                     Enjoy our images of the {this.state.classification}s. {this.state.selectedReaction}
                 </h3>}
-                <Grid
-                    container
-                    direction='row'
-                    justify='center'
-                    alignItems='center'
-                    spacing={1}
-                >
+                <ResponsiveMasonry columnsCountBreakPoints={{650: 1, 950: 2, 1250: 3, 1550: 4,}}>
+                    <Masonry>
                     {this.state.images.map((value, index) => {
                         return (
-                            <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                                <div>
-                                    <img loading='lazy' style={{width: '100%'}} src={value} alt={''}/>
-                                </div>
-                            </Grid>
+                            <div style={{minWidth: '300px'}}>
+                                <img loading='lazy' style={{width: '100%'}} src={value} alt={''}/>
+                            </div>
                         );
                     })}
-                </Grid>
-                <Backdrop open={this.state.loading}>
-                    <CircularProgress color="inherit" />
-                </Backdrop>
+                    </Masonry>
+                </ResponsiveMasonry>
+                <Modal open={this.state.loading} >
+                    <div style={{display:'flex',alignItems:'center',justifyContent:'center', height: '100vh'}}>
+                        <CircularProgress color='inherit' />
+                    </div>
+                </Modal>
             </Navbar>
         );
     }
