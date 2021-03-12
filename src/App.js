@@ -2,7 +2,7 @@ import './App.css';
 
 import React from 'react';
 
-import {Modal, CircularProgress} from '@material-ui/core';
+import {Modal, CircularProgress, Button} from '@material-ui/core';
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 
 import Title from './assets/Dogtionary.png'
@@ -29,39 +29,56 @@ class App extends React.Component {
         ],
         selectedReaction: null,
         error: null,
+        fileSelected: false,
     }
 
     onFileChange = async event => {
         this.setState({loading: true});
         event.preventDefault();
 
-        let reader = new FileReader();
-        let file = event.target.files[0];
+        if (event.target.files[0]) {
+            let reader = new FileReader();
+            let file = event.target.files[0];
 
-        reader.onloadend = () => {
+            reader.onloadend = () => {
+                this.setState({
+                    images: [],
+                    classification: null,
+                    selectedReaction: null,
+                    selectedFile: file,
+                    imagePreviewUrl: reader.result,
+                    error: null,
+                    loading: false,
+                    fileSelected: true,
+                });
+            }
+
+            reader.readAsDataURL(file);
+        }else {
             this.setState({
                 images: [],
                 classification: null,
                 selectedReaction: null,
-                selectedFile: file,
-                imagePreviewUrl: reader.result,
                 error: null,
-                loading: false,
-            });
+                loading: false
+            })
         }
-
-        reader.readAsDataURL(file);
-    };
+    }
+    ;
 
     onFileUpload = async () => {
         this.setState({loading: true});
+
         if(this.state.selectedFile) {
             const model = await mobilenet.load();
 
+            // Required for predictions @tensorflow-models/mobilenet only accepts HTMLImageElement type
             let element = document.createElement('img');
             element.src = this.state.imagePreviewUrl;
 
             const predictions = await model.classify(element);
+
+            console.log(predictions);
 
             const max = predictions.reduce((prev, current) => {
                 return (prev.probability > current.probability) ? prev : current;
@@ -83,7 +100,7 @@ class App extends React.Component {
                 breedName = max.className.toLowerCase();
             }
 
-            if (max.probability >= 0.80) {
+            if (max.probability >= 0.60) {
                 if(subBreed !== ''){
                     const response = await fetch('https://dog.ceo/api/breed/' + breedName + '/' + subBreed + '/images');
                     const data = await response.json();
@@ -138,26 +155,33 @@ class App extends React.Component {
     render(){
         return (
             <Navbar>
-                <div style={{textAlign: 'center', paddingTop: '50px'}}>
-                    <img style={{width: '500px'}} src={Title} alt={''}/>
-                    <p style={{fontFamily: 'book antiqua'}}>Upload a picture of a dog and our system will classify the breed of the dog, providing you with
+                <div className='root'>
+                    <img className='Title' src={Title} alt={''}/>
+                    <p style={{fontFamily: 'book antiqua'}}>
+                        Upload a picture of a dog and our system will classify the breed of the dog, providing you with
                         more pictures of dogs of the same breed. Please enjoy.
                     </p>
-                    <strong style={{display: 'block', paddingBottom: '15px'}}>CATS BEWARE</strong>
-                    <div>
-                        <input type="file" accept=".png, .jpg, .jpeg"  onChange={this.onFileChange} />
-                        <button onClick={this.onFileUpload}>
-                            Upload!
-                        </button>
+                    <strong className='warning'>CATS BEWARE</strong>
+                    <div className='upload'>
+                        <input id="contained-button-file" type="file" accept=".png, .jpg, .jpeg" onChange={this.onFileChange} />
+                        <label htmlFor="contained-button-file">
+                            <Button size="small" variant="contained" color="primary" component="span">
+                                Upload
+                            </Button>
+                            {this.state.selectedFile ? ''+this.state.selectedFile.name : 'upload Dog image'}
+                        </label>
+                        <Button size="small" variant="contained" disabled={!this.state.fileSelected} onClick={this.onFileUpload}>
+                            submit
+                        </Button>
                     </div>
                     <div>
-                        {this.state.imagePreviewUrl && <img style={{padding: '7px', maxWidth: '300px'}} src={this.state.imagePreviewUrl} alt={''}/>}
+                        {this.state.imagePreviewUrl && <img className='preview' src={this.state.imagePreviewUrl} alt={''}/>}
                     </div>
                 </div>
-                {this.state.error && <h3 style={{display: 'block', padding: '15px', textAlign: 'center', color: 'red'}}>
+                {this.state.error && <h3 className='error'>
                     {this.state.error}
                 </h3>}
-                {this.state.classification && <h3 style={{display: 'block', padding: '15px', textAlign: 'center'}}>
+                {this.state.classification && <h3 className='classification'>
                     Enjoy our images of the {this.state.classification}s. {this.state.selectedReaction}
                 </h3>}
                 <ResponsiveMasonry columnsCountBreakPoints={{650: 1, 950: 2, 1250: 3, 1550: 4,}}>
@@ -172,8 +196,8 @@ class App extends React.Component {
                     </Masonry>
                 </ResponsiveMasonry>
                 <Modal open={this.state.loading} >
-                    <div style={{display:'flex',alignItems:'center',justifyContent:'center', height: '100vh'}}>
-                        <CircularProgress color='inherit' />
+                    <div className='loading'>
+                        <CircularProgress color='inherit'/>
                     </div>
                 </Modal>
             </Navbar>

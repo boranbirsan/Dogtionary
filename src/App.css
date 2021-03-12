@@ -1,0 +1,50 @@
+.root {
+    text-align: center;
+    padding-top: 50px;
+}
+
+.Title {
+    width: 500px;
+}
+
+.warning {
+    display: block;
+    padding-bottom: 15px;
+}
+
+.upload input {
+    display: none;
+}
+
+.upload label {
+    padding-right: 15px;
+}
+
+.upload label span {
+   margin-right: 5px;
+}
+
+.preview {
+    padding: 7px;
+    max-width: 300px;
+}
+
+.error {
+    display: block;
+    padding: 15px;
+    text-align: center;
+    color: red;
+}
+
+.classification {
+    display: block;
+    padding: 15px;
+    text-align: center;
+}
+
+.loading {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
