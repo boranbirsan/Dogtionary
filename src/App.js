@@ -158,8 +158,8 @@ class App extends React.Component {
                 <div className='root'>
                     <img className='Title' src={Title} alt={''}/>
                     <p style={{fontFamily: 'book antiqua'}}>
-                        Upload a picture of a dog and our system will classify the breed of the dog, providing you with
-                        more pictures of dogs of the same breed. Please enjoy.
+                        Upload a picture of a dog and our system will classify the breed, providing you with
+                        more pictures of dogs of the same breed. Enjoy!
                     </p>
                     <strong className='warning'>CATS BEWARE</strong>
                     <div className='upload'>
