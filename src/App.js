@@ -200,20 +200,20 @@ class App extends React.Component {
                 {this.state.classification && <h3 className='classification'>
                     Enjoy our images of the {this.state.classification}s. {this.state.selectedReaction}
                 </h3>}
-                <ResponsiveMasonry columnsCountBreakPoints={{650: 1, 950: 2, 1250: 3, 1550: 4}}>
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={(page) => {
-                            this.setState({displayImages: this.state.images.slice(0, page * 10)});
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={(page) => {
+                        this.setState({displayImages: this.state.images.slice(0, page * 10)});
 
-                            this.setState({hasMore: this.state.displayImages.length < this.state.images.length});
-                        }}
-                        hasMore={this.state.hasMore}
-                        loader={<div style={{textAlign: 'center'}} key={0}>Loading ...</div>}
-                        useWindow={true}
-                        initialLoad={false}
-                        threshold={10}
-                    >
+                        this.setState({hasMore: this.state.displayImages.length < this.state.images.length});
+                    }}
+                    hasMore={this.state.hasMore}
+                    loader={<div style={{textAlign: 'center'}} key={0}>Loading ...</div>}
+                    useWindow={true}
+                    initialLoad={false}
+                    threshold={10}
+                >
+                    <ResponsiveMasonry columnsCountBreakPoints={{650: 1, 950: 2, 1250: 3, 1550: 4}}>
                         <Masonry>
                             {this.state.displayImages.map((value, index) => {
                                 return (
@@ -223,11 +223,11 @@ class App extends React.Component {
                                 );
                             })}
                         </Masonry>
-                    </InfiniteScroll>
-                </ResponsiveMasonry>
+                    </ResponsiveMasonry>
+                </InfiniteScroll>
                 <Modal open={this.state.loading} >
                     <div className='loading'>
-                        <CircularProgress color='inherit'/>
+                        <p style={{color: 'white'}}>loading ...</p>
                     </div>
                 </Modal>
             </Navbar>
