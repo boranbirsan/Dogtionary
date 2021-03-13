@@ -128,7 +128,7 @@ class App extends React.Component {
                         });
                     }else{
                         this.setState({
-                            error: 'Could not find the correctly find the images of this breed. It might help to try another picture or breed.',
+                            error: 'Could not find the images of this breed. It might help to try another picture or breed.',
                             loading: false,
                         });
                     }
@@ -149,7 +149,7 @@ class App extends React.Component {
                         });
                     }else{
                         this.setState({
-                            error: 'Could not find the correctly find the images of this breed. It might help to try another picture or breed.',
+                            error: 'An unexpected error has occurred. It might help to try another picture or breed.',
                             loading: false,
                         });
                     }
