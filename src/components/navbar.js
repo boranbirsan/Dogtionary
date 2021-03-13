@@ -52,7 +52,7 @@ const useStyles = makeStyles(theme => ({
 
 function Navbar ( {children} ) {
     const classes = useStyles();
-    const isMobile = useMediaQuery('(max-width: 750px');
+    const isMobile = useMediaQuery('(max-width: 850px');
 
     return (
         <div className={classes.root}>

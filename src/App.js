@@ -2,7 +2,7 @@ import './App.css';
 
 import React from 'react';
 
-import {Modal, CircularProgress, Button} from '@material-ui/core';
+import {Modal, Typography, Button} from '@material-ui/core';
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -121,7 +121,7 @@ class App extends React.Component {
                             images: images,
                             displayImages: images.slice(0, 10),
                             hasMore: true,
-                            classification: subBreed + ' ' + breedName,
+                            classification: subBreed.charAt(0).toUpperCase() + subBreed.slice(1) + ' ' + breedName.charAt(0).toUpperCase() + breedName.slice(1),
                             selectedReaction: this.state.reactions[randomInt],
                             error: null,
                             loading: false,
@@ -142,7 +142,7 @@ class App extends React.Component {
                             images: images,
                             displayImages: images.slice(0, 10),
                             hasMore: true,
-                            classification: breedName,
+                            classification: breedName.charAt(0).toUpperCase() + breedName.slice(1),
                             selectedReaction: this.state.reactions[randomInt],
                             error: null,
                             loading: false,
@@ -173,11 +173,11 @@ class App extends React.Component {
             <Navbar>
                 <div className='root'>
                     <img className='Title' src={Title} alt={''}/>
-                    <p style={{fontFamily: 'book antiqua'}}>
+                    <Typography style={{fontFamily: 'book antiqua', padding: '20px', fontSize: '20px'}}>
                         Upload a picture of a dog and our system will classify the breed, providing you with
                         more pictures of dogs of the same breed. Enjoy!
-                    </p>
-                    <strong className='warning'>CATS BEWARE</strong>
+                    </Typography>
+                    <Typography style={{padding: '20px', fontSize: '20px'}}><strong className='warning'>CATS BEWARE!</strong></Typography>
                     <div className='upload'>
                         <input id="contained-button-file" type="file" accept=".png, .jpg, .jpeg" onChange={this.onFileChange} />
                         <label htmlFor="contained-button-file">
