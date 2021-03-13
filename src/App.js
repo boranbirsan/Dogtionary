@@ -227,7 +227,7 @@ class App extends React.Component {
                 </InfiniteScroll>
                 <Modal open={this.state.loading} >
                     <div className='loading'>
-                        <p style={{color: 'white'}}>loading ...</p>
+                        <p style={{fontSize: '50px', color: 'white'}}>Loading ...</p>
                     </div>
                 </Modal>
             </Navbar>
