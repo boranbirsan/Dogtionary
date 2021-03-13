@@ -4,16 +4,23 @@ import React from 'react';
 
 import {Modal, CircularProgress, Button} from '@material-ui/core';
 import Masonry, {ResponsiveMasonry} from "react-responsive-masonry"
+import InfiniteScroll from 'react-infinite-scroller';
 
 import Title from './assets/Dogtionary.png'
 
 import Navbar from './components/navbar';
+
+// Adds the WASM backend to the global backend registry.
+
 const mobilenet = require('@tensorflow-models/mobilenet');
+
 
 class App extends React.Component {
     state = {
         loading: false,
         images: [],
+        displayImages: [],
+        hasMore: false,
         selectedFile: null,
         imagePreviewUrl: null,
         classification: null,
@@ -43,6 +50,8 @@ class App extends React.Component {
             reader.onloadend = () => {
                 this.setState({
                     images: [],
+                    displayImages: [],
+                    hasMore: false,
                     classification: null,
                     selectedReaction: null,
                     selectedFile: file,
@@ -64,12 +73,12 @@ class App extends React.Component {
             })
         }
     }
-    ;
 
     onFileUpload = async () => {
         this.setState({loading: true});
 
         if(this.state.selectedFile) {
+
             const model = await mobilenet.load();
 
             // Required for predictions @tensorflow-models/mobilenet only accepts HTMLImageElement type
@@ -84,7 +93,7 @@ class App extends React.Component {
                 return (prev.probability > current.probability) ? prev : current;
             });
 
-            var breedName = '';
+            var breedName;
             var subBreed = '';
 
             if (max.className.indexOf(',') > -1) {
@@ -101,13 +110,17 @@ class App extends React.Component {
             }
 
             if (max.probability >= 0.60) {
+
                 if(subBreed !== ''){
                     const response = await fetch('https://dog.ceo/api/breed/' + breedName + '/' + subBreed + '/images');
                     const data = await response.json();
                     if(response.ok){
                         const randomInt = Math.floor(Math.random() * Math.floor(this.state.reactions.length));
+                        const images = data.message;
                         this.setState({
-                            images: data.message,
+                            images: images,
+                            displayImages: images.slice(0, 10),
+                            hasMore: true,
                             classification: subBreed + ' ' + breedName,
                             selectedReaction: this.state.reactions[randomInt],
                             error: null,
@@ -124,8 +137,11 @@ class App extends React.Component {
                     const data = await response.json();
                     if(response.ok) {
                         const randomInt = Math.floor(Math.random() * Math.floor(this.state.reactions.length));
+                        const images = data.message;
                         this.setState({
-                            images: data.message,
+                            images: images,
+                            displayImages: images.slice(0, 10),
+                            hasMore: true,
                             classification: breedName,
                             selectedReaction: this.state.reactions[randomInt],
                             error: null,
@@ -184,16 +200,30 @@ class App extends React.Component {
                 {this.state.classification && <h3 className='classification'>
                     Enjoy our images of the {this.state.classification}s. {this.state.selectedReaction}
                 </h3>}
-                <ResponsiveMasonry columnsCountBreakPoints={{650: 1, 950: 2, 1250: 3, 1550: 4,}}>
-                    <Masonry>
-                    {this.state.images.map((value, index) => {
-                        return (
-                            <div style={{minWidth: '300px'}}>
-                                <img loading='lazy' style={{width: '100%'}} src={value} alt={''}/>
-                            </div>
-                        );
-                    })}
-                    </Masonry>
+                <ResponsiveMasonry columnsCountBreakPoints={{650: 1, 950: 2, 1250: 3, 1550: 4}}>
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={(page) => {
+                            this.setState({displayImages: this.state.images.slice(0, page * 10)});
+
+                            this.setState({hasMore: this.state.displayImages.length < this.state.images.length});
+                        }}
+                        hasMore={this.state.hasMore}
+                        loader={<div style={{textAlign: 'center'}} key={0}>Loading ...</div>}
+                        useWindow={true}
+                        initialLoad={false}
+                        threshold={10}
+                    >
+                        <Masonry>
+                            {this.state.displayImages.map((value, index) => {
+                                return (
+                                    <div key={index} style={{minWidth: '300px'}}>
+                                        <img loading='lazy' style={{width: '100%'}} src={value} alt={''}/>
+                                    </div>
+                                );
+                            })}
+                        </Masonry>
+                    </InfiniteScroll>
                 </ResponsiveMasonry>
                 <Modal open={this.state.loading} >
                     <div className='loading'>
