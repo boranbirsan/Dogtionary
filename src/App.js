@@ -164,6 +164,12 @@ class App extends React.Component {
             breedName = fullName.toLowerCase();
             subBreed = '';
         }
+        // Undo lack of space for user
+        if (fullName.includes('germanshepherd')) fullName = 'German Shepherd';
+        if (fullName.includes('mexicanhairless')) fullName = 'Mexican Hairless';
+        if (fullName.includes('cotondetulear')) fullName = 'Coton de Tulear';
+        if (fullName.includes('stbernard')) fullName = 'Saint Bernard';
+        if (fullName.includes('pitbull')) fullName = 'Pitbull';
 
         const response = await fetch('https://dog.ceo/api/breed/' + breedName + subBreed + '/images');
         const data = await response.json();
@@ -223,6 +229,11 @@ class App extends React.Component {
                 return breedName.charAt(0).toUpperCase() + breedName.slice(1);
             }
         }
+
+        // One final check for pit bull, because it is often classified as American Pit Bull Terrier or American Terrier
+        // but Pit Bull does not exist in data base only "pitbull"
+        if (classification.className.toLowerCase().includes('pit bull')) return 'Pitbull';
+
         throw new Error("I'm sorry, this is not a dog that I recognize, please try again with a different image.");
     }
 
