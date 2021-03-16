@@ -161,11 +161,10 @@ class App extends React.Component {
             subBreed = '';
         }
         // Undo lack of space for user
-        if (fullName.includes('germanshepherd')) fullName = 'German Shepherd';
-        if (fullName.includes('mexicanhairless')) fullName = 'Mexican Hairless';
-        if (fullName.includes('cotondetulear')) fullName = 'Coton de Tulear';
-        if (fullName.includes('stbernard')) fullName = 'Saint Bernard';
-        if (fullName.includes('pitbull')) fullName = 'Pitbull';
+        if (fullName.includes('Germanshepherd')) fullName = 'German Shepherd';
+        if (fullName.includes('Mexicanhairless')) fullName = 'Mexican Hairless';
+        if (fullName.includes('Cotondetulear')) fullName = 'Coton de Tulear';
+        if (fullName.includes('Stbernard')) fullName = 'Saint Bernard';
 
         const response = await fetch('https://dog.ceo/api/breed/' + breedName + subBreed + '/images');
         const data = await response.json();
