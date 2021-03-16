@@ -6,13 +6,9 @@ import Masonry, {ResponsiveMasonry} from "react-responsive-masonry";
 import InfiniteScroll from 'react-infinite-scroller';
 
 import Title from './assets/Dogtionary.png';
-
 import Navbar from './components/navbar';
 
-// Adds the WASM backend to the global backend registry.
-
 const mobilenet = require('@tensorflow-models/mobilenet');
-
 
 class App extends React.Component {
     state = {
